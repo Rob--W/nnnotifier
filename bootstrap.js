@@ -46,15 +46,26 @@ function startup() {
   if (!sysAlertsFactory)
     return;
 
+  // Note: This used to be "Cm.nsIComponentRegistrar", but broke in Firefox 37:
+  // InternalError: too much recursion (resource://gre/components/multiprocessShims.js:130:8)
+  // JS Stack trace:
+  //   AddonInterpositionService.prototype.interpose/desc.value@multiprocessShims.js:130:9
+  //   ComponentRegistrarInterposition.methods.unregisterFactory@RemoteAddonsParent.jsm:291:5
+  //   ...
+  // Apparently this bug is caused by a shim that was specifically written for
+  // AdBlock (http://bugzil.la/1007982), so I looked in AdBlock Plus's source
+  // code and found an alternative way of getting the component registrar:
+  let registrar = Cm.QueryInterface(Ci.nsIComponentRegistrar);
+
   // Unregister the built-in (native) system alerts class factory
-  Cm.nsIComponentRegistrar.unregisterFactory(
+  registrar.unregisterFactory(
       Cc[NS_SYSTEMALERTSERVICE_CONTRACTID],
       sysAlertsFactory);
 
   // Register a dummy factory. Without this one, the unregistered factory would
   // still be used upon calling
   // Notification.requestPermission(function(){ new Notification('tit',{}); });
-  Cm.nsIComponentRegistrar.registerFactory(
+  registrar.registerFactory(
       Cc[NS_SYSTEMALERTSERVICE_CONTRACTID],
       "Null system alerts service",
       NS_SYSTEMALERTSERVICE_CONTRACTID,
@@ -71,12 +82,14 @@ function shutdown(data, reason) {
   if (!sysAlertsFactory)
     return;
 
-  Cm.nsIComponentRegistrar.unregisterFactory(
+  let registrar = Cm.QueryInterface(Ci.nsIComponentRegistrar);
+
+  registrar.unregisterFactory(
       Cc[NS_SYSTEMALERTSERVICE_CONTRACTID],
       nullAlertsFactory);
 
   // Restore the built-in (native) system alerts class factory
-  Cm.nsIComponentRegistrar.registerFactory(
+  registrar.registerFactory(
       Cc[NS_SYSTEMALERTSERVICE_CONTRACTID],
       "Native system alert service",
       NS_SYSTEMALERTSERVICE_CONTRACTID,
