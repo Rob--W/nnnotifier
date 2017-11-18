@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<section>
+    <h2>Firefox 59 and later</h2>
+    As of Firefox 59, native notifications can be disabled through a preference
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1418287"
+        title="Add preference to disable native notifications (and use XUL notifications instead)">bug 1418287</a>):
+    <ol>
+        <li>Visit <code>about:config</code> .</li>
+        <li>Search for <code>alerts.useSystemBackend</code> .</li>
+        <li>Set this preference to <code>false</code>.</li>
+    </ol>
+</section>
+
+<section>
+    <h2>Firefox 57 and 58 for Linux</h2>
+    There is no safe way to disable native notifications through a browser
+    extension on Linux, so manual action is required: Native notifications can
+    be disabled by hiding the libnotify library from Firefox.
+    <!--
+        Source: https://searchfox.org/mozilla-central/rev/9bab9dc5a9472e3c163ab279847d2249322c206e/toolkit/system/gnome/nsAlertsIconListener.cpp#77-106
+    -->
+    For example, by starting Firefox with the following shell script:
+    <br>
+
+<textarea readonly rows="6" style="width:100%">#!/bin/sh
+DIRNAME=$(mktemp -d)
+touch "${DIRNAME}/libnotify.so.4"
+export LD_LIBRARY_PATH="${DIRNAME}"
+/usr/bin/firefox "$@"
+rm -rf "${DIRNAME}"</textarea>
+
+<p>
+    The script does the following:
+    <ol>
+        <li>Create an empty directory.</li>
+        <li>Create an empty file called <code>libnotify.so.4</code> in that
+            directory.</li>
+        <li>Start Firefox with the <code>LD_LIBRARY_PATH</code> environment
+            variable pointing to that directory.</li>
+        <li>Remove the files from the first two steps upon exit.</li>
+    </ol>
+
+    After running the above steps, disable this extension since it is no longer
+    needed.
+</section>
+
+<section>
+    <h2>Firefox 57 and 58 for Mac</h2>
+    <div>
+        Install <a href="https://addons.mozilla.org/en-US/firefox/addon/no-native-notifications/versions/0.2pre1">No Native Notifications version 0.2pre1</a>
+        to disable native notifications on macOS.
+    </div>
+</section>
+
+<section>
+    <h2>Firefox for Windows</h2>
+    Firefox does not support native notifications on Windows, so you do not have
+    to install anything to disable it.
+</section>
+
+<section>
+    <h2>Firefox 56 and earlier</h2>
+    <div>
+        Install <a href="https://addons.mozilla.org/en-US/firefox/addon/no-native-notifications/versions/0.1.1-signed.1-signed">No Native Notifications version 0.1</a>
+        to disable native notifications on Linux and macOS.
+    </div>
+</section>
+
+<footer style="margin-top:2em;border-top:1px black solid;padding-top:1em">
+These instructions are also available at <a href="https://github.com/Rob--W/nnnotifier#readme">https://github.com/Rob--W/nnnotifier</a>.
+</footer>
+</body>
+</html>

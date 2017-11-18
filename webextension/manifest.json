@@ -1,0 +1,22 @@
+{
+    "name": "No Native Notifications",
+    "author": "Rob Wu",
+    "homepage_url": "https://github.com/Rob--W/nnnotifier",
+    "version": "0.2pre1",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "notifications"
+    ],
+    "options_ui": {
+        "page": "no-native-notifications.html"
+    },
+    "applications": {
+        "gecko": {
+            "id": "nnnotifier@robwu.nl",
+            "strict_min_version": "57.0a1"
+        }
+    }
+}
