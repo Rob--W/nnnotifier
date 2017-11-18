@@ -31,10 +31,17 @@ async function macForceXULNotifications() {
     // are used:
     // https://searchfox.org/mozilla-central/rev/9bab9dc5a9472e3c163ab279847d2249322c206e/toolkit/components/alerts/nsAlertsService.cpp#223-232
     const NOTIFICATION_ID_MAC_FORCE_XUL = 'x'.repeat(5001);
+    let shown = new Promise(resolve => {
+        browser.notifications.onShown.addListener(function listener() {
+            resolve();
+            browser.notifications.onShown.removeListener(listener);
+        });
+    });
     browser.notifications.create(NOTIFICATION_ID_MAC_FORCE_XUL, {
         type: 'basic',
         title: 'Enabling XUL notifications',
         message: '',
     });
+    await shown;
     browser.notifications.clear(NOTIFICATION_ID_MAC_FORCE_XUL);
 }
