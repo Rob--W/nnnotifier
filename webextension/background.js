@@ -15,8 +15,7 @@
 
     if (os === 'mac' && !supportsPref) {
         macForceXULNotifications();
-    }
-    if (os === 'mac' || os === 'linux') {
+    } else if (os === 'mac'  || os === 'linux') {
         browser.runtime.openOptionsPage();
     } else {
         console.log('No Native Notifications serves no purpose for ' + os);

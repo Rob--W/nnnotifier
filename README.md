@@ -27,7 +27,7 @@ For previous versions, the method depends on the operating system.
 ### macOS
 
 - Firefox 59 and later (recommended): see the above preference.
-- Firefox 57 and later: install [No Native Notifications 0.2pre1](https://addons.mozilla.org/en-US/firefox/addon/no-native-notifications/versions/0.2pre1).
+- Firefox 57 and later: install [No Native Notifications 0.2pre2](https://addons.mozilla.org/en-US/firefox/addon/no-native-notifications/versions/0.2pre2).
 - Firefox 56 and earlier: install [No Native Notifications 0.1](https://addons.mozilla.org/en-US/firefox/addon/no-native-notifications/versions/0.1.1-signed.1-signed).
 
 
